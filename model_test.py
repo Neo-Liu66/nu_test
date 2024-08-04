@@ -29,7 +29,7 @@ script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, 'tpu_part.tflite')
 print(f"测试点-模型路径：{model_file}")
 data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
-
+print(f"测试点-数据路径：{data_file}")
 #######################################################################
 #model_file='tpu_part.tflite'
 #data_file = np.load("x_test_noisy1.npy")
@@ -44,13 +44,13 @@ def runTFLite(input_data):
         model_file,
         experimental_delegates=[tflite.load_delegate('libedgetpu.so.1')]
     )
-
+    print('模型导入成功')
     interpreter.allocate_tensors()
-
+    print('张量分配成功')
     # Get input and output details
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
-
+    print('获取输入输出信息成功')
     # Prepare the test dataset (replace with your test data)
     test_data = input_data.astype(np.int8)
     print(test_data)
