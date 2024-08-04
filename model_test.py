@@ -6,17 +6,18 @@ Created on Thu Feb 29 13:47:54 2024
 """
 
 # Autoencoder model quantization tests
-
+"""
 #%%  import libraries
 import matplotlib.pyplot as plt
-import numpy as np
+
 import pandas as pd
 from scipy import signal
 import math
 import scipy.io
 from tensorflow import keras
 from keras import models
-
+"""
+import numpy as np
 import tflite_runtime.interpreter as tflite
 
 
@@ -67,10 +68,12 @@ def runTFLite(input_data):
     results = np.squeeze(results, axis=(1,3))
     return results,test_data
 
-decoded_layer,test_data = runTFLite(data_file)
+def main():
+    decoded_layer,test_data = runTFLite(data_file)
+    print(decoded_layer)
 
 
-
+"""
 plt.figure(figsize=(10, 10))
 
 # Plotting the original noisy test data
@@ -93,7 +96,7 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig("tpu_int8.png")
 plt.show()
-"""
+
 # Plot the results
 plt.figure(figsize=(10, 5))
 plt.plot(decoded_layer[0], label='Decoded Output')
