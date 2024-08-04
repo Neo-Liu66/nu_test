@@ -23,10 +23,6 @@ import os as os
 import pathlib as pathlib
 import numpy as np
 import tflite_runtime.interpreter as tflite
-print("OS version:", os.uname())
-print("Pathlib version:", pathlib.__version__ if hasattr(pathlib, '__version__') else "Not available")
-print("NumPy version:", np.__version__)
-print("TFLite Runtime version:", tflite.__version__)
 
 script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, 'tpu_part.tflite')
