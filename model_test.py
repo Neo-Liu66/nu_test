@@ -6,6 +6,8 @@ Created on Thu Feb 29 13:47:54 2024
 """
 
 # Autoencoder model quantization tests
+
+
 """
 #%%  import libraries
 import matplotlib.pyplot as plt
@@ -17,6 +19,8 @@ import scipy.io
 from tensorflow import keras
 from keras import models
 """
+import os as os
+import pathlib as pathlib
 import numpy as np
 import tflite_runtime.interpreter as tflite
 
@@ -28,13 +32,14 @@ data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
 
 #######################################################################
 #model_file='tpu_part.tflite'
-# = np.load("x_test_noisy1.npy")
+#data_file = np.load("x_test_noisy1.npy")
 ########################################################################
 
 #%% 2. Run tensorflow lite models
 def runTFLite(input_data):
 
-    #interpreter = tf.lite.Interpreter(model_path='tpu_part.tflite')
+    #interpreter = tflite.Interpreter(model_path='tpu_part.tflite')
+
     interpreter = tflite.Interpreter(
         model_file,
         experimental_delegates=[tflite.load_delegate('libedgetpu.so.1')]
@@ -72,7 +77,8 @@ def main():
     decoded_layer,test_data = runTFLite(data_file)
     print(decoded_layer)
 
-
+if __name__ == "__main__":
+    main()
 """
 plt.figure(figsize=(10, 10))
 
