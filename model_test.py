@@ -23,7 +23,10 @@ import os as os
 import pathlib as pathlib
 import numpy as np
 import tflite_runtime.interpreter as tflite
-
+print("OS version:", os.uname())
+print("Pathlib version:", pathlib.__version__ if hasattr(pathlib, '__version__') else "Not available")
+print("NumPy version:", np.__version__)
+print("TFLite Runtime version:", tflite.__version__)
 
 script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, 'tpu_part.tflite')
@@ -39,7 +42,7 @@ print(f"测试点-数据路径：{data_file}")
 def runTFLite(input_data):
 
     #interpreter = tflite.Interpreter(model_path='tpu_part.tflite')
-
+    print('进入运行函数')
     interpreter = tflite.Interpreter(
         model_file,
         experimental_delegates=[tflite.load_delegate('libedgetpu.so.1')]
