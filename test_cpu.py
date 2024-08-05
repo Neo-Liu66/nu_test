@@ -28,7 +28,7 @@ from pycoral.utils import edgetpu
 import tflite_runtime.interpreter as tflite
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, 'int8_2d.tflite')
+model_file = os.path.join(script_dir, 'float32_cpu.tflite')
 print(f"测试点-模型路径：{model_file}")
 data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
 print(f"测试点-数据路径：{data_file}")
