@@ -22,7 +22,6 @@ from keras import models
 import os as os
 import pathlib as pathlib
 import numpy as np
-import tensorflow as tf
 from pycoral.utils.edgetpu import make_interpreter
 from pycoral.utils import edgetpu
 
@@ -43,9 +42,8 @@ print(f"测试点-数据路径：{data_file}")
 #%% 2. Run tensorflow lite models
 def runTFLite(input_data):
     print('进入运行函数')
-
-    interpreter = tf.lite.Interpreter(model_file)
-    #interpreter = tflite.Interpreter(model_file2)
+    interpreter = tflite.Interpreter(model_file2,
+                                     experimental_delegates=[tflite.load_delegate('libedgetpu.so.1')])
     print('模型导入成功')
     interpreter.allocate_tensors()
     print('张量分配成功')
