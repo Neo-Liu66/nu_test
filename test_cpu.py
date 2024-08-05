@@ -22,10 +22,11 @@ from keras import models
 import os as os
 import pathlib as pathlib
 import numpy as np
+import tensorflow.lite as tflite
 #from pycoral.utils.edgetpu import make_interpreter
 #from pycoral.utils import edgetpu
 #import tflite_runtime.interpreter as tflite
-import tensorflow.lite as tflite
+
 
 script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, '2d_cpu.tflite')
@@ -45,7 +46,7 @@ def runTFLite(input_data):
     #interpreter = tflite.Interpreter(model_file,
     #                                 experimental_delegates=[tflite.load_delegate('libedgetpu.so.1')])
     #interpreter = make_interpreter(model_file2)
-    interpreter = tflite.Interpreter(model_path='tpu_part.tflite')
+    interpreter = tflite.Interpreter(model_path=model_file)
     print('模型导入成功')
     interpreter.allocate_tensors()
     print('张量分配成功')
