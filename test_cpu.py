@@ -28,8 +28,10 @@ from pycoral.utils import edgetpu
 import tflite_runtime.interpreter as tflite
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, 'int8_cpu.tflite')
+model_file = os.path.join(script_dir, '2d_cpu.tflite')
 print(f"测试点-模型路径：{model_file}")
+model_file2 = os.path.join(script_dir, '2d_tpu.tflite')
+print(f"测试点-模型路径：{model_file2}")
 data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
 print(f"测试点-数据路径：{data_file}")
 #######################################################################
@@ -40,10 +42,30 @@ print(f"测试点-数据路径：{data_file}")
 #%% 2. Run tensorflow lite models
 def runTFLite(input_data):
     print('进入运行函数')
-    interpreter = tflite.Interpreter(model_file)
-    print('模型导入成功')
-    interpreter.allocate_tensors()
-    print('张量分配成功')
+    try:
+        # 尝试创建解释器
+        interpreter = make_interpreter(model_file)
+        print("cpu模型运行成功")
+        interpreter.allocate_tensors()
+        print('张量分配成功')
+    except Exception as e:
+        # 捕获并处理任何错误
+        print("运行失败:", str(e))
+    try:
+        # 尝试创建解释器
+        interpreter = make_interpreter(model_file2)
+        print("tpu模型运行成功")
+        interpreter.allocate_tensors()
+        print('张量分配成功')
+    except Exception as e:
+        # 捕获并处理任何错误
+        print("运行失败:", str(e))
+
+    #interpreter = tflite.Interpreter(model_file)
+    #print('模型导入成功')
+    #interpreter.allocate_tensors()
+    #print('张量分配成功')
+
     # Get input and output details
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
