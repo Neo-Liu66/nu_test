@@ -23,29 +23,33 @@ import os as os
 import pathlib as pathlib
 import numpy as np
 import tensorflow.lite as tflite
-#from pycoral.utils.edgetpu import make_interpreter
-#from pycoral.utils import edgetpu
-#import tflite_runtime.interpreter as tflite
+
+# from pycoral.utils.edgetpu import make_interpreter
+# from pycoral.utils import edgetpu
+# import tflite_runtime.interpreter as tflite
 
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, '2d_cpu.tflite')
+model_file = os.path.join(script_dir, 'cpu_pt.tflite')
 print(f"测试点-模型路径：{model_file}")
-model_file2 = os.path.join(script_dir, '2d_tpu.tflite')
-print(f"测试点-模型路径：{model_file2}")
+# model_file2 = os.path.join(script_dir, '2d_tpu.tflite')
+# print(f"测试点-模型路径：{model_file2}")
 data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
+data_file = np.load(data_file)
 print(f"测试点-数据路径：{data_file}")
+
+
 #######################################################################
-#model_file='tpu_part.tflite'
-#data_file = np.load("x_test_noisy1.npy")
+# model_file='tpu_part.tflite'
+# 2d_cpu = np.load("x_test_noisy1.npy")
 ########################################################################
 
-#%% 2. Run tensorflow lite models
+# %% 2. Run tensorflow lite models
 def runTFLite(input_data):
     print('进入运行函数')
-    #interpreter = tflite.Interpreter(model_file,
+    # interpreter = tflite.Interpreter(model_file,
     #                                 experimental_delegates=[tflite.load_delegate('libedgetpu.so.1')])
-    #interpreter = make_interpreter(model_file2)
+    # interpreter = make_interpreter(model_file2)
     interpreter = tflite.Interpreter(model_path=model_file)
     print('模型导入成功')
     interpreter.allocate_tensors()
@@ -56,6 +60,7 @@ def runTFLite(input_data):
     output_details = interpreter.get_output_details()
     print('获取输入输出信息成功')
     # Prepare the test dataset (replace with your test data)
+
     test_data = input_data.astype(np.int8)
     print(test_data)
 
@@ -74,12 +79,14 @@ def runTFLite(input_data):
 
     # Convert the results to a NumPy array
     results = np.array(results)
-    results = np.squeeze(results, axis=(1,3))
-    return results,test_data
+    results = np.squeeze(results, axis=(1, 3))
+    return results, test_data
+
 
 def main():
-    decoded_layer,test_data = runTFLite(data_file)
+    decoded_layer, test_data = runTFLite(data_file)
     print(decoded_layer)
+
 
 if __name__ == "__main__":
     main()
@@ -135,7 +142,7 @@ for i in range(len(x_test_clean)):
     z_test_clean[i] = x_test_clean[i]-np.mean(x_test_clean[i])
     ## denoised set
     z_decoded_layer[i] = decoded_layer[i].flatten()-np.mean(decoded_layer[i].flatten())
-    
+
 
 #%% Detect clean inputs
 clean_detect = []
@@ -150,8 +157,8 @@ for i in range(len(z_test_clean)):
         clean_detect.append(i)
     else:
         noisy_detect.append(i)
-        
-        
+
+
 ### initialize the lists to store the separated data
 clean_inputs = []
 clean_outputs = []
@@ -169,8 +176,8 @@ ground_truth_EMG = []
 for i in range(len(clean_detect)):
     clean_inputs.append(z_test_noisy[clean_detect[i]])
     clean_outputs.append(z_decoded_layer[clean_detect[i]])
-    
-    
+
+
 for i in range(len(noisy_detect)):
     if noisy_detect[i]<345:
         noisy_inputs_EOG.append(z_test_noisy[noisy_detect[i]])
@@ -184,7 +191,7 @@ for i in range(len(noisy_detect)):
         noisy_inputs_EMG.append(z_test_noisy[noisy_detect[i]])
         noisy_outputs_EMG.append(z_decoded_layer[noisy_detect[i]])
         ground_truth_EMG.append(z_test_clean[noisy_detect[i]])
-        
+
 
 
 
@@ -215,7 +222,7 @@ def RRMSE(true, pred):
     # den = np.sum(np.square(true))
     # squared_error = num/den
     # rrmse_loss = np.sqrt(squared_error)
-    
+
     ### method 2
     num = rmsValue(true-pred)
     den = rmsValue(true)
@@ -226,7 +233,7 @@ def RRMSE(true, pred):
 # calcualte RMSE (Root Mean Square Error) 
 def RMSE(true, pred):
     return rmsValue(true-pred)
-    
+
 
 
 
@@ -258,7 +265,7 @@ for i in range(len(clean_inputs)):
     # 1. PSD input clean EEG
     f, pxx = signal.welch(clean_inputs[i], fs=200, nperseg=nperseg, nfft=nfft) 
     clean_inputs_PSD[i] = pxx
-    
+
     # 2. PSD denoised/reconstructed EEG
     f, pxx = signal.welch(clean_outputs[i], fs=200, nperseg=nperseg, nfft=nfft) 
     clean_outputs_PSD[i] = pxx
@@ -286,7 +293,7 @@ EOG_RRMSEABS=[]
 for i in range(len(noisy_inputs_EOG)):
     EOG_RRMSE.append(RRMSE(ground_truth_EOG[i], noisy_outputs_EOG[i]))
     EOG_RRMSEABS.append(RMSE(ground_truth_EOG[i], noisy_outputs_EOG[i]))
-    
+
 ## 2. RRMSE: Frequency domain
 ground_truth_EOG_PSD = np.zeros(shape=(len(noisy_inputs_EOG), PSD_len))
 noisy_outputs_EOG_PSD = np.zeros(shape=(len(noisy_inputs_EOG), PSD_len))
@@ -296,7 +303,7 @@ for i in range(len(noisy_inputs_EOG)):
     # 1. PSD input clean EEG
     f, pxx = signal.welch(ground_truth_EOG[i], fs=200, nperseg=nperseg, nfft=nfft) 
     ground_truth_EOG_PSD[i] = pxx
-    
+
     # 2. PSD denoised/reconstructed EEG
     f, pxx = signal.welch(noisy_outputs_EOG[i], fs=200, nperseg=nperseg, nfft=nfft) 
     noisy_outputs_EOG_PSD[i] = pxx
@@ -325,7 +332,7 @@ Motion_RRMSEABS=[]
 for i in range(len(noisy_inputs_Motion)):
     Motion_RRMSE.append(RRMSE(ground_truth_Motion[i], noisy_outputs_Motion[i]))
     Motion_RRMSEABS.append(RMSE(ground_truth_Motion[i], noisy_outputs_Motion[i]))
-    
+
 ## 2. RRMSE: Frequency domain
 ground_truth_Motion_PSD = np.zeros(shape=(len(noisy_inputs_Motion), PSD_len))
 noisy_outputs_Motion_PSD = np.zeros(shape=(len(noisy_inputs_Motion), PSD_len))
@@ -335,7 +342,7 @@ for i in range(len(noisy_inputs_Motion)):
     # 1. PSD input clean EEG
     f, pxx = signal.welch(ground_truth_Motion[i], fs=200, nperseg=nperseg, nfft=nfft) 
     ground_truth_Motion_PSD[i] = pxx
-    
+
     # 2. PSD denoised/reconstructed EEG
     f, pxx = signal.welch(noisy_outputs_Motion[i], fs=200, nperseg=nperseg, nfft=nfft) 
     noisy_outputs_Motion_PSD[i] = pxx
@@ -372,7 +379,7 @@ for i in range(len(noisy_inputs_EMG)):
     # 1. PSD input clean EEG
     f, pxx = signal.welch(ground_truth_EMG[i], fs=200, nperseg=nperseg, nfft=nfft) 
     ground_truth_EMG_PSD[i] = pxx
-    
+
     # 2. PSD denoised/reconstructed EEG
     f, pxx = signal.welch(noisy_outputs_EMG[i], fs=200, nperseg=nperseg, nfft=nfft) 
     noisy_outputs_EMG_PSD[i] = pxx
