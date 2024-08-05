@@ -42,29 +42,11 @@ print(f"测试点-数据路径：{data_file}")
 #%% 2. Run tensorflow lite models
 def runTFLite(input_data):
     print('进入运行函数')
-    try:
-        # 尝试创建解释器
-        interpreter = make_interpreter(model_file)
-        print("cpu模型运行成功")
-        interpreter.allocate_tensors()
-        print('张量分配成功')
-    except Exception as e:
-        # 捕获并处理任何错误
-        print("运行失败:", str(e))
-    try:
-        # 尝试创建解释器
-        interpreter = make_interpreter(model_file2)
-        print("tpu模型运行成功")
-        interpreter.allocate_tensors()
-        print('张量分配成功')
-    except Exception as e:
-        # 捕获并处理任何错误
-        print("运行失败:", str(e))
 
-    #interpreter = tflite.Interpreter(model_file)
-    #print('模型导入成功')
-    #interpreter.allocate_tensors()
-    #print('张量分配成功')
+    interpreter = tflite.Interpreter(model_file)
+    print('模型导入成功')
+    interpreter.allocate_tensors()
+    print('张量分配成功')
 
     # Get input and output details
     input_details = interpreter.get_input_details()
