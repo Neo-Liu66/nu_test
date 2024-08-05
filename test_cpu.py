@@ -6,8 +6,6 @@ Created on Thu Feb 29 13:47:54 2024
 """
 
 # Autoencoder model quantization tests
-
-
 """
 #%%  import libraries
 import matplotlib.pyplot as plt
