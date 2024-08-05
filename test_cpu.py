@@ -44,7 +44,7 @@ def runTFLite(input_data):
     print('进入运行函数')
     #interpreter = tflite.Interpreter(model_file,
     #                                 experimental_delegates=[tflite.load_delegate('libedgetpu.so.1')])
-    interpreter = make_interpreter(model_file)
+    interpreter = make_interpreter(model_file2)
     print('模型导入成功')
     interpreter.allocate_tensors()
     print('张量分配成功')
