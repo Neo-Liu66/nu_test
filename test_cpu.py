@@ -43,7 +43,7 @@ print(f"测试点-数据路径：{data_file}")
 def runTFLite(input_data):
     print('进入运行函数')
 
-    interpreter = tflite.Interpreter(model_file)
+    interpreter = tflite.Interpreter(model_file2)
     print('模型导入成功')
     interpreter.allocate_tensors()
     print('张量分配成功')
