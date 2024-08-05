@@ -22,12 +22,9 @@ from keras import models
 import os as os
 import pathlib as pathlib
 import numpy as np
-import tensorflow.lite as tflite
-
 # from pycoral.utils.edgetpu import make_interpreter
 # from pycoral.utils import edgetpu
-# import tflite_runtime.interpreter as tflite
-
+import tflite_runtime.interpreter as tflite
 
 script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, 'cpu_pt.tflite')
