@@ -61,24 +61,18 @@ def runTFLite(input_data):
     for sample in test_data:
         # Set input tensor
         interpreter.set_tensor(input_details[0]['index'], sample.reshape((1,1, 800,1)))
-        print('reshape succeed')
         # Run inference
         interpreter.invoke()
-        print('invoke succeed')
         # Get the output
         output_data = interpreter.get_tensor(output_details[0]['index'])
-        print('output succeed')
         results.append(output_data)
-        print('result append succeed')
     end_time = time.time()
 
     total_time = end_time - start_time
     # Convert the results to a NumPy array
     results = np.array(results)
-    print('result acquire succeed')
     print(results.shape)
     results = np.squeeze(results, axis=(1, 2, 4))
-    print('result reshape succeed')
     return results, total_time
 
 
@@ -86,6 +80,7 @@ def main():
     decoded_layer, total_time = runTFLite(data_file)
     print(f'The time required to execute inference is:{total_time}')
     np.save('output_result.np',decoded_layer)
+    print('result saved')
 
 if __name__ == "__main__":
     main()
