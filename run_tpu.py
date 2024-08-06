@@ -52,8 +52,11 @@ def runTFLite(input_data):
     print('获取输入输出信息成功')
     # Prepare the test dataset (replace with your test data)
 
-    test_data = input_data.astype(np.int8)
-    print(test_data.shape)
+    #test_data = input_data.astype(np.int8)
+    min_val = np.min(input_data)
+    max_val = np.max(input_data)
+    scaled_data = (input_data - min_val) / (max_val - min_val) * 255 - 128
+    test_data = np.round(scaled_data).astype(np.int8)
 
     # Run inference on each test sample
     results = []
@@ -73,13 +76,14 @@ def runTFLite(input_data):
     results = np.array(results)
     print(results.shape)
     results = np.squeeze(results, axis=(1, 2, 4))
+    results = (results + 128) / 255 * (max_val - min_val) + min_val
     return results, total_time
 
 
 def main():
     decoded_layer, total_time = runTFLite(data_file)
     print(f'The time required to execute inference is:{total_time}')
-    np.save('output_result.npy',decoded_layer)
+    np.save('output_result.npy', decoded_layer)
     print('result saved')
 
 if __name__ == "__main__":
