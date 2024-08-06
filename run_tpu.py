@@ -84,7 +84,7 @@ def main():
     decoded_layer, total_time = runTFLite(data_file)
     print(f'The time required to execute inference is:{total_time}')
     np.save('output_result.npy', decoded_layer)
-    print('result saved')
+    print("First 5 samples of quantized data:", decoded_layer[:5])
 
 if __name__ == "__main__":
     main()
