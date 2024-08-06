@@ -17,6 +17,7 @@ import numpy as np
 # from pycoral.utils.edgetpu import make_interpreter
 # from pycoral.utils import edgetpu
 import tflite_runtime.interpreter as tflite
+import time
 
 script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, '2D_tpu_v13.tflite')
@@ -56,6 +57,7 @@ def runTFLite(input_data):
 
     # Run inference on each test sample
     results = []
+    start_time = time.time()
     for sample in test_data:
         # Set input tensor
         interpreter.set_tensor(input_details[0]['index'], sample.reshape((1,1, 800,1)))
@@ -68,19 +70,22 @@ def runTFLite(input_data):
         print('output succeed')
         results.append(output_data)
         print('result append succeed')
+    end_time = time.time()
+
+    total_time = end_time - start_time
     # Convert the results to a NumPy array
     results = np.array(results)
     print('result acquire succeed')
     print(results.shape)
     results = np.squeeze(results, axis=(1, 2, 4))
     print('result reshape succeed')
-    return results, test_data
+    return results, total_time
 
 
 def main():
-    decoded_layer, test_data = runTFLite(data_file)
-    print(decoded_layer)
-
+    decoded_layer, total_time = runTFLite(data_file)
+    print(f'The time required to execute inference is:{total_time}')
+    np.save('output_result.np',decoded_layer)
 
 if __name__ == "__main__":
     main()
