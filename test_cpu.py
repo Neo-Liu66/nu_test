@@ -51,7 +51,8 @@ def runTFLite(input_data):
     print('获取输入输出信息成功')
     # Prepare the test dataset (replace with your test data)
 
-    test_data = input_data.astype(np.int8)
+    #test_data = input_data.astype(np.int8)
+    test_data = input_data
     print(test_data.shape)
 
     # Run inference on each test sample
