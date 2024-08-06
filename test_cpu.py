@@ -52,24 +52,28 @@ def runTFLite(input_data):
     # Prepare the test dataset (replace with your test data)
 
     test_data = input_data.astype(np.int8)
-    print(test_data)
+    print(test_data.shape)
 
     # Run inference on each test sample
     results = []
     for sample in test_data:
         # Set input tensor
-        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1, 800,1)))
-
+        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1,1, 800,1)))
+        print('reshape succeed')
         # Run inference
         interpreter.invoke()
-
+        print('invoke succeed')
         # Get the output
         output_data = interpreter.get_tensor(output_details[0]['index'])
+        print('output succeed')
         results.append(output_data)
-
+        print('result append succeed')
     # Convert the results to a NumPy array
     results = np.array(results)
-    results = np.squeeze(results, axis=(1, 3))
+    print('result acquire succeed')
+    print(results.shape)
+    results = np.squeeze(results, axis=(1, 2, 4))
+    print('result reshape succeed')
     return results, test_data
 
 
