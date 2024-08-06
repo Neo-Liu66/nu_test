@@ -58,7 +58,7 @@ def runTFLite(input_data):
     results = []
     for sample in test_data:
         # Set input tensor
-        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1, 800)))
+        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1, 800,1)))
 
         # Run inference
         interpreter.invoke()
