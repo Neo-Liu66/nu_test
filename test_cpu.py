@@ -19,7 +19,7 @@ import numpy as np
 import tflite_runtime.interpreter as tflite
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, '2D_tpu_v1.tflite')
+model_file = os.path.join(script_dir, '2D_tpu_v13.tflite')
 print(f"测试点-模型路径：{model_file}")
 # model_file2 = os.path.join(script_dir, '2d_tpu.tflite')
 # print(f"测试点-模型路径：{model_file2}")
