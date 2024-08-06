@@ -37,10 +37,10 @@ data_file = np.load(data_file)
 # %% 2. Run tensorflow lite models
 def runTFLite(input_data):
     print('进入运行函数')
-    # interpreter = tflite.Interpreter(model_file,
-    #                                 experimental_delegates=[tflite.load_delegate('libedgetpu.so.1')])
+    interpreter = tflite.Interpreter(model_file,
+                                     experimental_delegates=[tflite.load_delegate('libedgetpu.so.1')])
     # interpreter = make_interpreter(model_file2)
-    interpreter = tflite.Interpreter(model_path=model_file)
+    #interpreter = tflite.Interpreter(model_path=model_file)
     print('模型导入成功')
     interpreter.allocate_tensors()
     print('张量分配成功')
