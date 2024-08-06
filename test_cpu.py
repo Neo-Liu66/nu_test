@@ -19,13 +19,14 @@ import numpy as np
 import tflite_runtime.interpreter as tflite
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, 'cpu_pt.tflite')
+model_file = os.path.join(script_dir, 'cpu_us.tflite')
 print(f"测试点-模型路径：{model_file}")
 # model_file2 = os.path.join(script_dir, '2d_tpu.tflite')
 # print(f"测试点-模型路径：{model_file2}")
 data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
-data_file = np.load(data_file)
 print(f"测试点-数据路径：{data_file}")
+data_file = np.load(data_file)
+
 
 
 #######################################################################
