@@ -5,6 +5,7 @@ import numpy as np
 # from pycoral.utils import edgetpu
 import tflite_runtime.interpreter as tflite
 import time
+import platform
 
 script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, 'int8_cpu_2D.tflite')
@@ -15,6 +16,21 @@ data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
 print(f"测试点-数据路径：{data_file}")
 data_file = np.load(data_file)
 
+EDGETPU_SHARED_LIB = {
+  'Linux': 'libedgetpu.so.1',
+  'Darwin': 'libedgetpu.1.dylib',
+  'Windows': 'edgetpu.dll'
+}[platform.system()]
+
+def make_interpreter(model_file):
+  model_file, *device = model_file.split('@')
+  return tflite.Interpreter(
+      model_path=model_file,
+      experimental_delegates=[
+          tflite.load_delegate(EDGETPU_SHARED_LIB,
+                               {'device': device[0]} if device else {})
+      ])
+
 #######################################################################
 # model_file='tpu_part.tflite'
 # 2d_cpu = np.load("x_test_noisy1.npy")
@@ -23,8 +39,8 @@ data_file = np.load(data_file)
 # %% 2. Run tensorflow lite models
 def runTFLite(input_data):
     print('进入运行函数')
-    interpreter = tflite.Interpreter(model_path=model_file)
-
+    #interpreter = tflite.Interpreter(model_path=model_file)
+    interpreter = make_interpreter(model_file)
     # interpreter = make_interpreter(model_file2)
     #interpreter = tflite.Interpreter(model_file)
     print('模型导入成功')
@@ -73,3 +89,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
