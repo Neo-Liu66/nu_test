@@ -54,11 +54,11 @@ def runTFLite(input_data):
     print('获取输入输出信息成功')
     # Prepare the test dataset (replace with your test data)
 
-    test_data = input_data.astype(np.float32)
-    #min_val = np.min(input_data)
-    #max_val = np.max(input_data)
-    #scaled_data = (input_data - min_val) / (max_val - min_val) * 255 - 128
-    #test_data = np.round(scaled_data).astype(np.int8)
+    #test_data = input_data.astype(np.float32)
+    min_val = np.min(input_data)
+    max_val = np.max(input_data)
+    scaled_data = (input_data - min_val) / (max_val - min_val) * 255 - 128
+    test_data = np.round(scaled_data).astype(np.int8)
 
     # Run inference on each test sample
     results = []
@@ -78,7 +78,7 @@ def runTFLite(input_data):
     results = np.array(results)
     print(results.shape)
     results = np.squeeze(results, axis=(1, 2, 4))
-    #results = (results + 128) / 255 * (max_val - min_val) + min_val
+    results = (results + 128) / 255 * (max_val - min_val) + min_val
     return results, total_time
 
 
