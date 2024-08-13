@@ -9,7 +9,7 @@ import platform
 from tflite_runtime.interpreter import Interpreter
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, '2D_tpu_v13.tflite')
+model_file = os.path.join(script_dir, 'denoise_model_int8.tflite')
 print(f"测试点-模型路径：{model_file}")
 # model_file2 = os.path.join(script_dir, '2d_tpu.tflite')
 # print(f"测试点-模型路径：{model_file2}")
