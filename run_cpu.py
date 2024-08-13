@@ -6,6 +6,7 @@ import numpy as np
 import tflite_runtime.interpreter as tflite
 import time
 import platform
+from tflite_runtime.interpreter import Interpreter
 
 script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, '2D_tpu_v13.tflite')
@@ -40,7 +41,7 @@ def make_interpreter(model_file):
 def runTFLite(input_data):
     print('进入运行函数')
     #interpreter = tflite.Interpreter(model_path=model_file)
-    interpreter = make_interpreter(model_file)
+    interpreter = Interpreter(model_path=model_file)
     # interpreter = make_interpreter(model_file2)
     #interpreter = tflite.Interpreter(model_file)
     print('模型导入成功')
