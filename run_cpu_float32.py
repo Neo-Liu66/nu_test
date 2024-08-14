@@ -12,6 +12,7 @@ print(f"测试点-模型路径：{model_file}")
 data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
 print(f"测试点-数据路径：{data_file}")
 input_data = np.load(data_file)
+print(f"测试点-打印数据：{input_data}")
 
 # %% 2. Run tensorflow lite models
 def runTFLite(input_data):
@@ -53,7 +54,7 @@ def runTFLite(input_data):
 
 
 def main():
-    decoded_layer, total_time = runTFLite(data_file)
+    decoded_layer, total_time = runTFLite(input_data)
     print(f'Float 32 on CPU Inference time is:{total_time}')
     np.save('float32_CPU_result.npy', decoded_layer)
 
