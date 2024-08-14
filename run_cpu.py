@@ -1,36 +1,17 @@
 import os as os
 import pathlib as pathlib
 import numpy as np
-# from pycoral.utils.edgetpu import make_interpreter
-# from pycoral.utils import edgetpu
-import tflite_runtime.interpreter as tflite
 import time
-import platform
 from tflite_runtime.interpreter import Interpreter
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, 'int8_cpu_2D.tflite')
+model_file = os.path.join(script_dir, 'int8_cpu.tflite')
 print(f"测试点-模型路径：{model_file}")
 # model_file2 = os.path.join(script_dir, '2d_tpu.tflite')
 # print(f"测试点-模型路径：{model_file2}")
 data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
 print(f"测试点-数据路径：{data_file}")
 data_file = np.load(data_file)
-
-EDGETPU_SHARED_LIB = {
-  'Linux': 'libedgetpu.so.1',
-  'Darwin': 'libedgetpu.1.dylib',
-  'Windows': 'edgetpu.dll'
-}[platform.system()]
-
-def make_interpreter(model_file):
-  model_file, *device = model_file.split('@')
-  return tflite.Interpreter(
-      model_path=model_file,
-      experimental_delegates=[
-          tflite.load_delegate(EDGETPU_SHARED_LIB,
-                               {'device': device[0]} if device else {})
-      ])
 
 #######################################################################
 # model_file='tpu_part.tflite'
@@ -84,8 +65,8 @@ def runTFLite(input_data):
 
 def main():
     decoded_layer, total_time = runTFLite(data_file)
-    print(f'The time required to execute inference is:{total_time}')
-    np.save('output_result.npy', decoded_layer)
+    print(f'Int 8 on CPU Inference time is:{total_time}')
+    np.save('int8_CPU_result.npy', decoded_layer)
     print("First 5 samples of quantized data:", decoded_layer[:5])
 
 if __name__ == "__main__":
