@@ -11,7 +11,7 @@ print(f"测试点-模型路径：{model_file}")
 # print(f"测试点-模型路径：{model_file2}")
 data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
 print(f"测试点-数据路径：{data_file}")
-data_file = np.load(data_file)
+input_data = np.load(data_file)
 
 # %% 2. Run tensorflow lite models
 def runTFLite(input_data):
@@ -29,7 +29,7 @@ def runTFLite(input_data):
     output_details = interpreter.get_output_details()
     print('获取输入输出信息成功')
     # Prepare the test dataset (replace with your test data)
-    test_data = input_data.astype(np.float32)
+    data_file = input_data.astype(np.float32)
 
     # Run inference on each test sample
     results = []
