@@ -9,14 +9,18 @@ x_test_clean = np.load('x_test_clean.npy')
 x_test_noisy = np.load('x_test_noisy.npy')
 
 test_data = np.load("x_test_noisy1.npy")
-decoded_layer = np.load("output_result.npy")
+
+decoded_layer = np.load("float32_CPU_result.npy")
+#decoded_layer = np.load("int8_CPU_result.npy")
+#decoded_layer = np.load("output_result.npy")
+#decoded_layer = np.load("baseline_result.npy")
 
 
 #######################################################################
 model_file='int8_cpu_2D.tflite'
 data_file = np.load("x_test_noisy1.npy")
 ########################################################################
-
+'''
 # %% 2. Run tensorflow lite models
 def runTFLite(input_data):
     print('进入运行函数')
@@ -63,7 +67,8 @@ def runTFLite(input_data):
 
 
 decoded_layer, total_time = runTFLite(data_file)
-'''
+
+
 plt.figure(figsize=(10, 10))
 
 # Plotting the original noisy test data
@@ -84,7 +89,29 @@ plt.legend()
 plt.grid(True)
 
 plt.tight_layout()
-plt.savefig("tpu_int8.png")
+plt.savefig("baseline.png")
+plt.show()
+'''
+
+
+plt.figure(figsize=(10, 5))
+
+# 绘制原始有噪声的测试数据和解码后的输出数据
+plt.plot(test_data[0], label='Original Noisy Test Data', color='blue', alpha=0.7)
+plt.plot(decoded_layer[0], label='Decoded Output', color='green', alpha=0.7)
+
+# 设置标题和标签
+plt.title('Original Noisy Test Data vs Decoded Output')
+plt.xlabel('Sample Index')
+plt.ylabel('Value')
+
+# 添加图例和网格
+plt.legend()
+plt.grid(True)
+
+# 调整布局并保存图片
+plt.tight_layout()
+plt.savefig("float32_cpu_to.png")
 plt.show()
 
 
@@ -422,4 +449,3 @@ print(" \n EEG EMG artifacts results:")
 print("RRMSE-Time:  mean= ","%.4f" % np.mean(EMG_RRMSE), " ,std= ","%.4f" % np.std(EMG_RRMSE))
 print("RRMSE-Freq:  mean= ","%.4f" % np.mean(EMG_PSD_RRMSE), " ,std= ","%.4f" % np.std(EMG_PSD_RRMSE))
 print("CC:  mean= ", "%.4f" % np.mean(EMG_CC), " ,std= ","%.4f" % np.std(EMG_CC))
-'''

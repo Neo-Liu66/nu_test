@@ -1,0 +1,9 @@
+编译v13模型
+edgetpu_compiler --min_runtime_version 13 [model.tflite]
+挂载sd卡
+sudo mount /dev/mmcblk2p1 /mnt
+拷贝文件至sd卡
+cp ~/nutest/nu_test/output_result.npy /mnt/
+cp ~/nutest/nu_test/float32_CPU_result.npy /mnt/
+cp ~/nutest/nu_test/int8_CPU_result.npy /mnt/
+
