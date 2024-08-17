@@ -5,7 +5,7 @@ import time
 from tflite_runtime.interpreter import Interpreter
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, 'tf2.5_cpu.tflite')
+model_file = os.path.join(script_dir, 'pruned_model.tflite')
 print(f"测试点-模型路径：{model_file}")
 # model_file2 = os.path.join(script_dir, '2d_tpu.tflite')
 # print(f"测试点-模型路径：{model_file2}")
