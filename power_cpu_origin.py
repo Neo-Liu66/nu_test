@@ -23,7 +23,7 @@ def runTFLite(input_data):
     start_time = time.time()
     elapsed_time = 0  # 初始化已用时间
 
-    for _ in range(10):
+    for _ in range(5):
         start_time = time.time()
         for sample in test_data:
             # 设置输入张量

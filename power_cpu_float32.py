@@ -23,7 +23,7 @@ def runTFLite(input_data):
 
     # Run inference on each test sample
     results = []
-    for _ in range(10):
+    for _ in range(5):
         start_time = time.time()
         for sample in data_file:
             # 设置输入张量
