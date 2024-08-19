@@ -29,8 +29,10 @@ def runTFLite(input_data):
     start_time = time.time()
     elapsed_time = 0  # 初始化已用时间
 
-    while elapsed_time < 120:  # 只要已用时间小于300秒
+    for _ in range(10):
+        start_time = time.time()
         for sample in test_data:
+
             # 设置输入张量
             interpreter.set_tensor(input_details[0]['index'], sample.reshape((1, 1, 800, 1)))
             # 运行推理
@@ -40,20 +42,21 @@ def runTFLite(input_data):
             results.append(output_data)
 
         # 更新已用时间
-        elapsed_time = time.time() - start_time
-    print(f'cpu_int8 推理总时长为{elapsed_time}')
-    # Convert the results to a NumPy array
+        end_time = time.time()
+        # 更新已用时间
+        used_time = end_time - start_time
+        print(f"int8_CPU,用时{used_time}")
     results = np.array(results)
     print(results.shape)
     results = np.squeeze(results, axis=(1, 2, 4))
     results = (results + 128) / 255 * (max_val - min_val) + min_val
-    return results, elapsed_time
+    return results, used_time
 
 
 def main():
     decoded_layer, total_time = runTFLite(data_file)
-    print(f'Int 8 on CPU Inference time is:{total_time}')
     np.save('int8_CPU_result.npy', decoded_layer)
+
 
 
 if __name__ == "__main__":
