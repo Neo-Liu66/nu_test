@@ -33,7 +33,7 @@ def runTFLite(input_data):
     start_time = time.time()
     elapsed_time = 0  # 初始化已用时间
 
-    while elapsed_time < 60:  # 只要已用时间小于300秒
+    while elapsed_time < 120:  # 只要已用时间小于300秒
         for sample in test_data:
             # 设置输入张量
             interpreter.set_tensor(input_details[0]['index'], sample.reshape((1, 1, 800, 1)))
