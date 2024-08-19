@@ -9,7 +9,7 @@ script_dir = pathlib.Path(__file__).parent.absolute()
 model_file = os.path.join(script_dir, 'float32_cpu.tflite')
 data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
 data_file = np.load(data_file)
-
+print(data_file.shape)
 
 # %% 2. Run tensorflow lite models
 def runTFLite(input_data):
