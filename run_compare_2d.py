@@ -5,11 +5,11 @@ import time
 from tflite_runtime.interpreter import Interpreter
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, 'cnn_cpu_1d.tflite')
+model_file = os.path.join(script_dir, 'cnn_cpu_2d.tflite')
 print(f"测试点-模型路径：{model_file}")
 # model_file2 = os.path.join(script_dir, '2d_tpu.tflite')
 # print(f"测试点-模型路径：{model_file2}")
-data_file = os.path.join(script_dir, 'x_test_noisy_1d.npy')
+data_file = os.path.join(script_dir, 'x_test_noisy.npy')
 print(f"测试点-数据路径：{data_file}")
 data_file = np.load(data_file)
 
@@ -46,7 +46,7 @@ def runTFLite(input_data):
     start_time = time.time()
     for sample in test_data:
         # Set input tensor
-        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1, 800, 1)))
+        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1, 1, 800, 1)))
         # Run inference
         interpreter.invoke()
         # Get the output
@@ -58,15 +58,15 @@ def runTFLite(input_data):
     # Convert the results to a NumPy array
     results = np.array(results)
     print(results.shape)
-    results = np.squeeze(results,axis=(1, 3))
+    results = np.squeeze(results,axis=(1, 2, 4))
     #results = (results + 128) / 255 * (max_val - min_val) + min_val
     return results, total_time
 
 
 def main():
     decoded_layer, total_time = runTFLite(data_file)
-    print(f'CNN_1D on CPU Inference time is:{total_time}')
-    np.save('CNN_1D_result.npy', decoded_layer)
+    print(f'CNN_2D on CPU Inference time is:{total_time}')
+    np.save('CNN_2D_result.npy', decoded_layer)
     print("First 5 samples of quantized data:", decoded_layer[:5])
 
 if __name__ == "__main__":
