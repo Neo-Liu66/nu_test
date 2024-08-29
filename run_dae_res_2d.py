@@ -33,12 +33,12 @@ def runTFLite(input_data):
 
     # Run inference on each test sample
     results = []
-    start_time = time.time()
+
 
     # Ensure input data is reshaped to match model's expected input shape
     expected_shape = input_details[0]['shape']  # This gives you the expected input shape from the model
     print(f"Expected input shape from model: {expected_shape}")
-
+    start_time = time.time()
     for sample in input_data:
         # Adjust the reshape to match the model's expected input shape
         interpreter.set_tensor(input_details[0]['index'], sample.reshape((1,1, 800,1)))
