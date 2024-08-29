@@ -37,7 +37,7 @@ def runTFLite(input_data):
     start_time = time.time()
     for sample in data_file:
         # Set input tensor
-        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1,1, 800,1)))
+        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1, 800, 1)))
         # Run inference
         interpreter.invoke()
         # Get the output
@@ -49,7 +49,7 @@ def runTFLite(input_data):
     # Convert the results to a NumPy array
     results = np.array(results)
     print(results.shape)
-    results = np.squeeze(results, axis=(1, 2, 4))
+    results = np.squeeze(results,axis=(1, 3))
     return results, total_time
 
 
