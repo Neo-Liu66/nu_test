@@ -9,7 +9,7 @@ model_file = os.path.join(script_dir, 'DAE_Res_2D.tflite')
 print(f"测试点-模型路径：{model_file}")
 # model_file2 = os.path.join(script_dir, '2d_tpu.tflite')
 # print(f"测试点-模型路径：{model_file2}")
-data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
+data_file = os.path.join(script_dir, 'x_test_noisy.npy')
 print(f"测试点-数据路径：{data_file}")
 input_data = np.load(data_file)
 print(f"测试点-打印数据：{input_data}")
@@ -41,7 +41,7 @@ def runTFLite(input_data):
 
     for sample in input_data:
         # Adjust the reshape to match the model's expected input shape
-        interpreter.set_tensor(input_details[0]['index'], sample.reshape(expected_shape))
+        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1,1, 800,1)))
         # Run inference
         interpreter.invoke()
         # Get the output

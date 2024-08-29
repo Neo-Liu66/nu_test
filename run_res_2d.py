@@ -31,7 +31,8 @@ def runTFLite(input_data):
     print('获取输入输出信息成功')
     # Prepare the test dataset (replace with your test data)
     data_file = input_data.astype(np.float32)
-
+    expected_shape = input_details[0]['shape']  # This gives you the expected input shape from the model
+    print(f"Expected input shape from model: {expected_shape}")
     # Run inference on each test sample
     results = []
     start_time = time.time()
