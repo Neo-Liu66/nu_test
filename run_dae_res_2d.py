@@ -37,7 +37,7 @@ def runTFLite(input_data):
     start_time = time.time()
     for sample in data_file:
         # Set input tensor
-        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1, 800, 1)))
+        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1,1, 800,1)))
         # Run inference
         interpreter.invoke()
         # Get the output
