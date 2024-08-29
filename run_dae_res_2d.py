@@ -55,8 +55,8 @@ def runTFLite(input_data):
 
 def main():
     decoded_layer, total_time = runTFLite(input_data)
-    print(f'CNN_2D on CPU Inference time is:{total_time}')
-    np.save('CNN_2D_result.npy', decoded_layer)
+    print(f'DAE_Res_2D on CPU Inference time is:{total_time}')
+    np.save('DAE_Res_2D_result.npy', decoded_layer)
 
 if __name__ == "__main__":
     main()

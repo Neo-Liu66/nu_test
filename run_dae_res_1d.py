@@ -65,8 +65,8 @@ def runTFLite(input_data):
 
 def main():
     decoded_layer, total_time = runTFLite(data_file)
-    print(f'CNN_1D on CPU Inference time is:{total_time}')
-    np.save('CNN_1D_result.npy', decoded_layer)
+    print(f'DAE_Res_1D on CPU Inference time is:{total_time}')
+    np.save('DAE_Res_1D_result.npy', decoded_layer)
     print("First 5 samples of quantized data:", decoded_layer[:5])
 
 if __name__ == "__main__":
