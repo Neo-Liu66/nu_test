@@ -54,7 +54,7 @@ def runTFLite(input_data):
     # Convert the results to a NumPy array
     results = np.array(results)
     print(results.shape)
-    results = np.squeeze(results, axis=(1, 3))
+    results = np.squeeze(results, axis=(1, 2, 4))
     return results, total_time
 
 
