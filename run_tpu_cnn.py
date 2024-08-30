@@ -33,16 +33,14 @@ def runTFLite(input_data):
     start_time = time.time()
     elapsed_time = 0  # 初始化已用时间
 
-    for _ in range(5):
-
-        for sample in test_data:
+    for sample in test_data:
             # 设置输入张量
-            interpreter.set_tensor(input_details[0]['index'], sample.reshape((1, 1, 800, 1)))
+        interpreter.set_tensor(input_details[0]['index'], sample.reshape((1, 1, 800, 1)))
             # 运行推理
-            interpreter.invoke()
+        interpreter.invoke()
             # 获取输出
-            output_data = interpreter.get_tensor(output_details[0]['index'])
-            results.append(output_data)
+        output_data = interpreter.get_tensor(output_details[0]['index'])
+        results.append(output_data)
     end_time = time.time()
     total_time = end_time - start_time
     print(f"int8_TPU_cnn,总用时{total_time}")
