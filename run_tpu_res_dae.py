@@ -48,13 +48,14 @@ def runTFLite(input_data):
         # 更新已用时间
         used_time = end_time - start_time
         print(f"int8_TPU_result,用时{used_time}")
-
+    end_time = time.time()
+    total_time = end_time - start_time
     # Convert the results to a NumPy array
     results = np.array(results)
     print(results.shape)
     results = np.squeeze(results, axis=(1, 2, 4))
     results = (results + 128) / 255 * (max_val - min_val) + min_val
-    return results, used_time
+    return results, total_time
 
 
 def main():
