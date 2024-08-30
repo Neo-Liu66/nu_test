@@ -7,7 +7,7 @@ import tflite_runtime.interpreter as tflite
 
 
 script_dir = pathlib.Path(__file__).parent.absolute()
-model_file = os.path.join(script_dir, 'res_tpu.tflite')
+model_file = os.path.join(script_dir, 'cnn_tpu.tflite')
 data_file = os.path.join(script_dir, 'x_test_noisy1.npy')
 data_file = np.load(data_file)
 
@@ -59,8 +59,8 @@ def runTFLite(input_data):
 
 def main():
     decoded_layer, total_time = runTFLite(data_file)
-    print(f'res_tpu Inference time is:{total_time}')
-    np.save('res_tpu_result.npy', decoded_layer)
+    print(f'cnn_tpu Inference time is:{total_time}')
+    np.save('cnn_tpu_result.npy', decoded_layer)
 
 
 if __name__ == "__main__":
